@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.29.178:5000";
+const API_URL = "https://pg-management-system-5twy.onrender.com";
 
 
 async function authFetch(url, options = {}) {
