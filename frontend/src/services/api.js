@@ -107,12 +107,15 @@ export async function getRooms() {
 // ================= REGISTER TENANT USER =================
 
 export async function registerTenant(formData) {
+  const token = localStorage.getItem("token");
+
   const response = await fetch(
     `${API_URL}/api/auth/register`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         name: formData.name,

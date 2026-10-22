@@ -33,7 +33,11 @@ const PORT = process.env.PORT || 5000;
 
 //ragister
 
-app.post("/api/auth/register", async (req, res) => {
+app.post(
+  "/api/auth/register",
+  authMiddleware,
+  roleMiddleware("owner"),
+  async (req, res) => {
   try {
     if (!req.body.name || !req.body.email || !req.body.phone) {
       return res.status(400).json({

@@ -12,6 +12,14 @@ function MainLayout() {
   const pgName = pg?.name || "My PG";
   const userName = user?.name || "Owner";
 
+  const userRole = user?.role || "owner";
+
+  const roleLabel = {
+    owner: "Owner",
+    admin: "Admin",
+    tenant: "Tenant",
+  }[userRole] || "User";
+
   const initials = userName
     .split(" ")
     .map((word) => word[0])
@@ -35,6 +43,7 @@ function MainLayout() {
     {
       label: "Dashboard",
       path: "/dashboard",
+      roles: ["owner", "admin", "tenant"],
       icon: (
         <svg
           className="h-5 w-5"
@@ -51,9 +60,11 @@ function MainLayout() {
         </svg>
       ),
     },
+
     {
       label: "Tenants",
       path: "/tenants",
+      roles: ["owner", "admin"],
       icon: (
         <svg
           className="h-5 w-5"
@@ -70,9 +81,11 @@ function MainLayout() {
         </svg>
       ),
     },
+
     {
       label: "Rooms & Beds",
       path: "/rooms",
+      roles: ["owner", "admin"],
       icon: (
         <svg
           className="h-5 w-5"
@@ -89,9 +102,11 @@ function MainLayout() {
         </svg>
       ),
     },
+
     {
       label: "Payments",
       path: "/payments",
+      roles: ["owner", "admin", "tenant"],
       icon: (
         <svg
           className="h-5 w-5"
@@ -111,6 +126,27 @@ function MainLayout() {
             strokeLinecap="round"
             strokeWidth="1.8"
             d="M3 10h18M7 15h3"
+          />
+        </svg>
+      ),
+    },
+
+    {
+      label: "Users",
+      path: "/users",
+      roles: ["owner"],
+      icon: (
+        <svg
+          className="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.8"
+            d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2M10 11a4 4 0 100-8 4 4 0 000 8zM21 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
           />
         </svg>
       ),
@@ -216,7 +252,9 @@ function MainLayout() {
           </p>
 
           <nav className="space-y-1.5">
-            {navItems.map((item) => (
+            {navItems
+              .filter((item) => item.roles.includes(userRole))
+              .map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
@@ -260,7 +298,7 @@ function MainLayout() {
               </p>
 
               <p className="text-xs capitalize text-slate-500">
-                {user?.role || "Owner"}
+                {roleLabel}
               </p>
             </div>
           </div>
@@ -296,8 +334,9 @@ function MainLayout() {
             <p className="text-sm text-slate-500">PG Management</p>
 
             <h1 className="font-semibold text-slate-900">
-              Admin Panel
+              {roleLabel} Panel
             </h1>
+            
           </div>
 
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
